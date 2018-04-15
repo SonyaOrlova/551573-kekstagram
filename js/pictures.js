@@ -41,7 +41,7 @@ var renderPicture = function (picture, pictureNumber) {
   pictureElement.querySelector('.picture__stat--likes').textContent = picture.likes;
   pictureElement.querySelector('.picture__stat--comments').textContent = picture.comments.length;
   // *добавляет аттрибут с указанием порядкового номера картинки
-  pictureElement.querySelector('.picture__link').setAttribute('dataset-number', pictureNumber);
+  pictureElement.querySelector('.picture__link').dataset.number = pictureNumber;
 
   return pictureElement;
 };
@@ -337,38 +337,40 @@ var closeBigPicture = function () {
   document.removeEventListener('keydown', onBigPictureEscPress);
 };
 
+// отрисовка фото
+var photos = document.querySelectorAll('.picture__link');
+var renderBigPhoto = function (photo) {
+  openBigPicture();
+
+  //  *подстановка комментариев
+  // ** берет атрибут по номеру картинки
+  var photoNumber = photo.dataset.number;
+
+  // **очищает комментарии, если они есть
+  var commentsInner = document.querySelector('.social__comments');
+  while (commentsInner.firstChild) {
+    commentsInner.removeChild(commentsInner.firstChild);
+  }
+  // **добавляет комментарии
+  var commentsFragment = document.createDocumentFragment();
+  for (var j = 0; j < pictures[photoNumber].comments.length; j++) {
+    commentsFragment.appendChild(renderComments(pictures[photoNumber].comments[j]));
+  }
+  commentsInner.appendChild(commentsFragment);
+
+  // *подстановка прочих значений миниатюры
+  bigPicture.querySelector('.big-picture__img').querySelector('img').src = pictures[photoNumber].url;
+  bigPicture.querySelector('.likes-count').textContent = pictures[photoNumber].likes;
+  bigPicture.querySelector('.comments-count').textContent = pictures[photoNumber].comments.length;
+};
+
+// открытие фото (событие)
+for (i = 0; i < photos.length; i++) {
+  photos[i].addEventListener('click', function (evt) {
+    renderBigPhoto(evt.target.parentNode);
+  });
+}
+
 // закрытие фото (событие)
 bigPictureCloser.addEventListener('click', closeBigPicture);
 bigPictureOverlay.addEventListener('click', closeBigPicture);
-
-// открытие фото (событие)
-var photos = document.querySelectorAll('.picture__link');
-
-for (i = 0; i < photos.length; i++) {
-  photos[i].addEventListener('click', function (evt) {
-    var picture = evt.target.parentNode;
-    openBigPicture();
-
-    //  *подстановка комментариев
-    // ** берет атрибут по номеру картинки
-    var photoNumber = picture.getAttribute('dataset-number');
-    // var photoNumber = picture.dataset.number; - не работает
-
-    // **очищает комментарии, если они есть
-    var commentsInner = document.querySelector('.social__comments');
-    while (commentsInner.firstChild) {
-      commentsInner.removeChild(commentsInner.firstChild);
-    }
-    // **добавляет комментарии
-    var commentsFragment = document.createDocumentFragment();
-    for (var j = 0; j < pictures[photoNumber].comments.length; j++) {
-      commentsFragment.appendChild(renderComments(pictures[photoNumber].comments[j]));
-    }
-    commentsInner.appendChild(commentsFragment);
-
-    // *подстановка прочих значений миниатюры
-    bigPicture.querySelector('.big-picture__img').querySelector('img').src = pictures[photoNumber].url;
-    bigPicture.querySelector('.likes-count').textContent = pictures[photoNumber].likes;
-    bigPicture.querySelector('.comments-count').textContent = pictures[photoNumber].comments.length;
-  });
-}
