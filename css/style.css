@@ -297,6 +297,7 @@ main {
   width: 582px;
 
   text-align: center;
+  z-index: 1;
 }
 
 .img-upload__form {

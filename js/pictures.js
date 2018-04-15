@@ -6,12 +6,10 @@ var random = function (min, max) {
 
 // создает массив фотографий
 
-var pictures = [];
-
 var createPictures = function (picturesNumber) {
+  var pictures = [];
   var descriptionArr = ['Тестим новую камеру!', 'Затусили с друзьями на море', 'Как же круто тут кормят', 'Отдыхаем...', 'Цените каждое мгновенье. Цените тех, кто рядом с вами и отгоняйте все сомненья. Не обижайте всех словами......', 'Вот это тачка!'];
   var phrasesArr = ['Всё отлично!', 'В целом всё неплохо. Но не всё.', 'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.', 'Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше.', 'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.', 'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'];
-  var pictures = [];
 
   for (var i = 0; i <= picturesNumber - 1; i++) {
     pictures[i] = {
@@ -37,11 +35,13 @@ var pictures = createPictures(25);
 
 var pictureTemplate = document.querySelector('#picture').content;
 
-var renderPicture = function (picture) {
+var renderPicture = function (picture, pictureNumber) {
   var pictureElement = pictureTemplate.cloneNode(true);
   pictureElement.querySelector('.picture__img').src = picture.url;
   pictureElement.querySelector('.picture__stat--likes').textContent = picture.likes;
   pictureElement.querySelector('.picture__stat--comments').textContent = picture.comments.length;
+  // *добавляет аттрибут с указанием порядкового номера картинки
+  pictureElement.querySelector('.picture__link').setAttribute('dataset-number', pictureNumber);
 
   return pictureElement;
 };
@@ -51,7 +51,7 @@ var renderPicture = function (picture) {
 var picturesFragment = document.createDocumentFragment();
 
 for (var i = 0; i < pictures.length; i++) {
-  picturesFragment.appendChild(renderPicture(pictures[i]));
+  picturesFragment.appendChild(renderPicture(pictures[i], i));
 }
 
 document.querySelector('.pictures').appendChild(picturesFragment);
@@ -59,7 +59,6 @@ document.querySelector('.pictures').appendChild(picturesFragment);
 // ********* Задание 15 - module4-task1 *********
 
 var ESC_KEYCODE = 27;
-var ENTER_KEYCODE = 13;
 
 var imagePreview = document.querySelector('.img-upload__preview').querySelector('img');
 
@@ -68,8 +67,9 @@ var imagePreview = document.querySelector('.img-upload__preview').querySelector(
 var selectFile = document.querySelector('#upload-file');
 var editor = document.querySelector('.img-upload__overlay');
 var editorCloser = document.querySelector('.img-upload__cancel');
+// var uploadOverlay = document.querySelector('.img-upload__overlay');
 
-var onEditorEscPress = function(evt) {
+var onEditorEscPress = function (evt) {
   if (evt.keyCode === ESC_KEYCODE) {
     closeEditor();
   }
@@ -92,14 +92,14 @@ var cleanSelect = function () {
 };
 
 // открывает редактор
-var openEditor = function() {
+var openEditor = function () {
   editor.classList.remove('hidden');
   document.addEventListener('keydown', onEditorEscPress);
 
 };
 
 // закрывает редактор
-var closeEditor = function() {
+var closeEditor = function () {
   editor.classList.add('hidden');
   document.removeEventListener('keydown', onEditorEscPress);
   cleanSelect();
@@ -113,13 +113,13 @@ var loadPicture = function () {
 
   // *меняет изображение в превью эффектов
   var effectsPreview = document.querySelectorAll('.effects__preview');
-  for (var i = 0; i < effectsPreview.length; i++) {
-    effectsPreview[i].style.backgroundImage = 'url(photos/'+fileName+')';
-  };
+  for (i = 0; i < effectsPreview.length; i++) {
+    effectsPreview[i].style.backgroundImage = 'url(photos/' + fileName + ')';
+  }
 };
 
 // выбор файла (событие)
-selectFile.addEventListener('change', function() {
+selectFile.addEventListener('change', function () {
   openEditor();
   loadPicture();
   cleanSelect();
@@ -127,6 +127,7 @@ selectFile.addEventListener('change', function() {
 
 // закрытие редактора (событие)
 editorCloser.addEventListener('click', closeEditor);
+// uploadOverlay.addEventListener('click', closeEditor);
 
 // Масштабирование изображения
 
@@ -147,7 +148,7 @@ var decreaseImage = function () {
 // увеличивает изображение
 var increaseImage = function () {
   if (currentSize < 100) {
-    currentSize += sizeStep;;
+    currentSize += sizeStep;
   }
   renderImageSize(currentSize);
 };
@@ -174,33 +175,33 @@ var defaultEffect = 'none';
 var defaultEffectValue = 1;
 
 var selectEffect = function () {
-  for (var i = 0; i < effects.length; i++) {
+  for (i = 0; i < effects.length; i++) {
     if (effects[i].checked) {
       checkedEffect = effects[i].value;
     }
   }
-    return checkedEffect;
+  return checkedEffect;
 };
 
 // событие выбора типа эффекта
 
-for (var i = 0; i < effects.length; i++) {
-  effects[i].addEventListener('change', function(evt) {
+for (i = 0; i < effects.length; i++) {
+  effects[i].addEventListener('change', function () {
     selectEffect();
     renderImageEffect(checkedEffect);
-  })
-};
+  });
+}
 
 // отрисовка эффекта на дефолтных значениях
 
 var renderImageEffect = function (effectSelected) {
   // *добавляет класс эффекта после проверки
-  for (var i = 0; i < effects.length; i++) {
+  for (i = 0; i < effects.length; i++) {
     if (imagePreview.classList.contains('effects__preview--' + effects[i].value + '')) {
       imagePreview.classList.remove('effects__preview--' + effects[i].value + '');
     }
-  };
-  imagePreview.classList.add('effects__preview--'+ effectSelected +'');
+  }
+  imagePreview.classList.add('effects__preview--' + effectSelected + '');
 
   // *сбрасывает глубину эффекта до 100
   renderEffectIntension(defaultEffectValue);
@@ -214,7 +215,7 @@ var renderImageEffect = function (effectSelected) {
     effectBar.classList.add('hidden');
   } else if (effectBar.classList.contains('hidden')) {
     effectBar.classList.remove('hidden');
-  };
+  }
 
   // *сброс размеров изображения
   currentSize = defaultSize;
@@ -257,7 +258,8 @@ var calculateEffectIntension = function (target) {
 
 // выбор глубины эффекта (событие)
 
-effectBar.addEventListener('mouseup', function(evt) {
+effectBar.addEventListener('mouseup', function (evt) {
+  evt.preventDefault();
   var mouseFix = evt;
   renderEffectIntension(calculateEffectIntension(mouseFix));
 });
@@ -287,43 +289,86 @@ var renderEffectIntension = function (currentEffectValue) {
 
 // 4.3 + 4.4 Просмотр загруженных изображений
 
+// отрисовывает комментарии под увеличенным изображением
+
+var makeElement = function (tagName, className) {
+  var element = document.createElement(tagName);
+  element.className = className;
+  return element;
+};
+
+var renderComments = function (comment) {
+  var listItem = makeElement('li', 'social__comment social__comment--text');
+
+  var picture = makeElement('img', 'social__picture');
+  picture.src = 'img/avatar-' + random(1, 6) + '.svg';
+  picture.alt = 'Аватар комментатора фотографии';
+  picture.width = '35';
+  picture.height = '35';
+  listItem.appendChild(picture);
+
+  var text = document.createTextNode(comment);
+  listItem.appendChild(text);
+
+  return listItem;
+};
+
+// показ увелиенного изображения
+
 var bigPicture = document.querySelector('.big-picture');
 var bigPictureCloser = document.querySelector('.big-picture__cancel');
+var bigPictureOverlay = document.querySelector('.big-picture.overlay');
 
-var onBigPictureEscPress = function(evt) {
+var onBigPictureEscPress = function (evt) {
   if (evt.keyCode === ESC_KEYCODE) {
     closeBigPicture();
   }
 };
 
 // открывает фото
-var openBigPicture = function() {
+var openBigPicture = function () {
   bigPicture.classList.remove('hidden');
   document.addEventListener('keydown', onBigPictureEscPress);
 };
 
 // закрывает фото
-var closeBigPicture = function() {
+var closeBigPicture = function () {
   bigPicture.classList.add('hidden');
   document.removeEventListener('keydown', onBigPictureEscPress);
 };
 
 // закрытие фото (событие)
 bigPictureCloser.addEventListener('click', closeBigPicture);
+bigPictureOverlay.addEventListener('click', closeBigPicture);
 
 // открытие фото (событие)
 var photos = document.querySelectorAll('.picture__link');
 
-for (var i = 0; i < photos.length; i++) {
-  photos[i].addEventListener('click', function(evt) {
-    evt.preventDefault();
+for (i = 0; i < photos.length; i++) {
+  photos[i].addEventListener('click', function (evt) {
+    var picture = evt.target.parentNode;
     openBigPicture();
 
-    bigPicture.querySelector('.big-picture__img').querySelector('img').src = this.querySelector('img').src;
-    bigPicture.querySelector('.likes-count').textContent = this.querySelector('.picture__stat--likes').textContent;
-    bigPicture.querySelector('.comments-count').textContent = this.querySelector('.picture__stat--comments').textContent;
-  })
-};
+    //  *подстановка комментариев
+    // ** берет атрибут по номеру картинки
+    var photoNumber = picture.getAttribute('dataset-number');
+    // var photoNumber = picture.dataset.number; - не работает
 
-// подстановка значений миниатюры
+    // **очищает комментарии, если они есть
+    var commentsInner = document.querySelector('.social__comments');
+    while (commentsInner.firstChild) {
+      commentsInner.removeChild(commentsInner.firstChild);
+    }
+    // **добавляет комментарии
+    var commentsFragment = document.createDocumentFragment();
+    for (var j = 0; j < pictures[photoNumber].comments.length; j++) {
+      commentsFragment.appendChild(renderComments(pictures[photoNumber].comments[j]));
+    }
+    commentsInner.appendChild(commentsFragment);
 
+    // *подстановка прочих значений миниатюры
+    bigPicture.querySelector('.big-picture__img').querySelector('img').src = pictures[photoNumber].url;
+    bigPicture.querySelector('.likes-count').textContent = pictures[photoNumber].likes;
+    bigPicture.querySelector('.comments-count').textContent = pictures[photoNumber].comments.length;
+  });
+}
