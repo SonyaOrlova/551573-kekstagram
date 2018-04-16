@@ -76,9 +76,7 @@ var onEditorEscPress = function (evt) {
 };
 
 // сбрасывает значения выбора
-var cleanSelect = function () {
-  selectFile.value = '';
-
+var resetPreviewChanges = function () {
   // *сброс размеров
   currentSize = defaultSize;
   renderImageSize(defaultSize);
@@ -95,34 +93,31 @@ var cleanSelect = function () {
 var openEditor = function () {
   editor.classList.remove('hidden');
   document.addEventListener('keydown', onEditorEscPress);
-
+  resetPreviewChanges ();
 };
 
 // закрывает редактор
 var closeEditor = function () {
   editor.classList.add('hidden');
   document.removeEventListener('keydown', onEditorEscPress);
-  cleanSelect();
+  selectFile.value = '';
 };
 
 // загружает фото из папки проекта photos
-var loadPicture = function () {
-  var fileName = selectFile.files[0].name;
-  // *меняет превью изображения
-  imagePreview.src = 'photos/' + fileName;
-
-  // *меняет изображение в превью эффектов
+var loadPicture = function (evt) {
+  imagePreview.src = URL.createObjectURL(evt.target.files[0]);
+  console.log(URL.createObjectURL(evt.target.files[0]));
+    // *меняет изображение в превью эффектов
   var effectsPreview = document.querySelectorAll('.effects__preview');
   for (i = 0; i < effectsPreview.length; i++) {
-    effectsPreview[i].style.backgroundImage = 'url(photos/' + fileName + ')';
+    effectsPreview[i].style.backgroundImage = 'url(' + URL.createObjectURL(evt.target.files[0]) + ')';
   }
 };
 
 // выбор файла (событие)
-selectFile.addEventListener('change', function () {
+selectFile.addEventListener('change', function (evt) {
   openEditor();
-  loadPicture();
-  cleanSelect();
+  loadPicture(evt);
 });
 
 // закрытие редактора (событие)
@@ -377,3 +372,63 @@ for (i = 0; i < photos.length; i++) {
 // закрытие фото (событие)
 bigPictureCloser.addEventListener('click', closeBigPicture);
 bigPictureOverlay.addEventListener('click', closeBigPicture);
+
+// ********* Задание 15 - module4-task2 *********
+
+// 2.3 Хэш-теги
+
+var descriptionForm = document.querySelector('.img-upload__text');
+
+// *если фокус находится в поле ввода хэш-тега, нажатие на Esc не должно приводить к закрытию формы редактирования изображения
+descriptionForm.addEventListener('keydown', function (evt) {
+  if (evt.keyCode === ESC_KEYCODE) {
+    evt.stopPropagation();
+  }
+});
+
+// *проверка формы хеш-тегов
+var hashtagsInput = document.querySelector('.text__hashtags');
+
+var onHashtagsValidationInput = function (evt) {
+
+  var hashtags = evt.target.value.toLowerCase().split(' ');
+
+  var containsHash = function (hashtag) {
+    var splittedHashtag = hashtag.split('');
+    for (var j = 1; j < splittedHashtag.length; j++) {
+      if (splittedHashtag[j] === '#') {
+        return true;
+      }
+    }
+  };
+
+  var containsDublicates = function (hashtag, hashtags, index) {
+    for (var y = index + 1; y < hashtags.length; y++) {
+      if (hashtag == hashtags[y]) {
+        return true
+      }
+    }
+  };
+
+  for (var i = 0; i < hashtags.length; i++) {
+    if (!hashtags[i].startsWith('#')) {
+      evt.target.setCustomValidity('хэш-тег должен начинаться с символа # (решётка)');
+    } else if (hashtags[i] == '#') {
+        evt.target.setCustomValidity('хеш-тег не может состоять только из одной # (решётки)');
+    } else if (hashtags[i].length > 20) {
+        evt.target.setCustomValidity('максимальная длина одного хэш-тега 20 символов');
+    } else if (containsHash(hashtags[i])) {
+        evt.target.setCustomValidity('разделите слово на 2 хеш-тега или уберите # (решётку)');
+    } else if (containsDublicates(hashtags[i], hashtags.length, i)) {
+        evt.target.setCustomValidity('один и тот же хэш-тег не может быть использован дважды');
+    } else if (hashtags.length > 5) {
+        evt.target.setCustomValidity('нельзя указать больше 5 хэш-тегов');
+    } else {
+      evt.target.setCustomValidity('');
+    }
+  }
+};
+
+// *событие валидации формы
+hashtagsInput.addEventListener('input', onHashtagsValidationInput);
+descriptionForm.addEventListener('submit', onHashtagsValidationInput);
