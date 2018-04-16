@@ -93,7 +93,7 @@ var resetPreviewChanges = function () {
 var openEditor = function () {
   editor.classList.remove('hidden');
   document.addEventListener('keydown', onEditorEscPress);
-  resetPreviewChanges ();
+  resetPreviewChanges();
 };
 
 // закрывает редактор
@@ -106,8 +106,7 @@ var closeEditor = function () {
 // загружает фото из папки проекта photos
 var loadPicture = function (evt) {
   imagePreview.src = URL.createObjectURL(evt.target.files[0]);
-  console.log(URL.createObjectURL(evt.target.files[0]));
-    // *меняет изображение в превью эффектов
+  // *меняет изображение в превью эффектов
   var effectsPreview = document.querySelectorAll('.effects__preview');
   for (i = 0; i < effectsPreview.length; i++) {
     effectsPreview[i].style.backgroundImage = 'url(' + URL.createObjectURL(evt.target.files[0]) + ')';
@@ -362,7 +361,7 @@ var renderBigPhoto = function (photo) {
 // открытие фото (событие)
 
 var onPhotoClick = function (evt) {
-  renderBigPhoto(evt.target.parentNode)
+  renderBigPhoto(evt.target.parentNode);
 };
 
 for (i = 0; i < photos.length; i++) {
@@ -397,32 +396,32 @@ var onHashtagsValidationInput = function (evt) {
     var splittedHashtag = hashtag.split('');
     for (var j = 1; j < splittedHashtag.length; j++) {
       if (splittedHashtag[j] === '#') {
-        return true;
+        return;
       }
     }
   };
 
-  var containsDublicates = function (hashtag, hashtags, index) {
+  var containsDublicates = function (hashtag, hashtagsList, index) {
     for (var y = index + 1; y < hashtags.length; y++) {
-      if (hashtag == hashtags[y]) {
-        return true
+      if (hashtag === hashtags[y]) {
+        return;
       }
     }
   };
 
-  for (var i = 0; i < hashtags.length; i++) {
+  for (i = 0; i < hashtags.length; i++) {
     if (!hashtags[i].startsWith('#')) {
       evt.target.setCustomValidity('хэш-тег должен начинаться с символа # (решётка)');
-    } else if (hashtags[i] == '#') {
-        evt.target.setCustomValidity('хеш-тег не может состоять только из одной # (решётки)');
+    } else if (hashtags[i] === '#') {
+      evt.target.setCustomValidity('хеш-тег не может состоять только из одной # (решётки)');
     } else if (hashtags[i].length > 20) {
-        evt.target.setCustomValidity('максимальная длина одного хэш-тега 20 символов');
+      evt.target.setCustomValidity('максимальная длина одного хэш-тега 20 символов');
     } else if (containsHash(hashtags[i])) {
-        evt.target.setCustomValidity('разделите слово на 2 хеш-тега или уберите # (решётку)');
+      evt.target.setCustomValidity('разделите слово на 2 хеш-тега или уберите # (решётку)');
     } else if (containsDublicates(hashtags[i], hashtags.length, i)) {
-        evt.target.setCustomValidity('один и тот же хэш-тег не может быть использован дважды');
+      evt.target.setCustomValidity('один и тот же хэш-тег не может быть использован дважды');
     } else if (hashtags.length > 5) {
-        evt.target.setCustomValidity('нельзя указать больше 5 хэш-тегов');
+      evt.target.setCustomValidity('нельзя указать больше 5 хэш-тегов');
     } else {
       evt.target.setCustomValidity('');
     }
