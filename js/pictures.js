@@ -392,23 +392,6 @@ var onHashtagsValidationInput = function (evt) {
 
   var hashtags = evt.target.value.toLowerCase().split(' ');
 
-  var containsHash = function (hashtag) {
-    var splittedHashtag = hashtag.split('');
-    for (var j = 1; j < splittedHashtag.length; j++) {
-      if (splittedHashtag[j] === '#') {
-        return;
-      }
-    }
-  };
-
-  var containsDublicates = function (hashtag, hashtagsList, index) {
-    for (var y = index + 1; y < hashtags.length; y++) {
-      if (hashtag === hashtags[y]) {
-        return;
-      }
-    }
-  };
-
   for (i = 0; i < hashtags.length; i++) {
     if (!hashtags[i].startsWith('#')) {
       evt.target.setCustomValidity('хэш-тег должен начинаться с символа # (решётка)');
@@ -416,9 +399,9 @@ var onHashtagsValidationInput = function (evt) {
       evt.target.setCustomValidity('хеш-тег не может состоять только из одной # (решётки)');
     } else if (hashtags[i].length > 20) {
       evt.target.setCustomValidity('максимальная длина одного хэш-тега 20 символов');
-    } else if (containsHash(hashtags[i])) {
+    } else if (hashtags[i].lastIndexOf('#') > 0) {
       evt.target.setCustomValidity('разделите слово на 2 хеш-тега или уберите # (решётку)');
-    } else if (containsDublicates(hashtags[i], hashtags.length, i)) {
+    } else if (hashtags.lastIndexOf(hashtags[i]) === i) {
       evt.target.setCustomValidity('один и тот же хэш-тег не может быть использован дважды');
     } else if (hashtags.length > 5) {
       evt.target.setCustomValidity('нельзя указать больше 5 хэш-тегов');
