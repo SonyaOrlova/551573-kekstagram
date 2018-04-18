@@ -254,9 +254,25 @@ var calculateEffectIntension = function (target) {
 
 effectBar.addEventListener('mouseup', function (evt) {
   evt.preventDefault();
-  var mouseFix = evt;
-  renderEffectIntension(calculateEffectIntension(mouseFix));
+  renderEffectIntension(calculateEffectIntension(evt));
 });
+
+effectRunner.addEventListener('mousedown', function (evt) {
+  evt.preventDefault();
+  document.addEventListener('mousemove', onMouseMove);
+  document.addEventListener('mouseup', onMouseUp);
+});
+
+var onMouseMove = function (evt) {
+  evt.preventDefault();
+  renderEffectIntension(calculateEffectIntension(evt));
+};
+
+var onMouseUp = function (evt) {
+  evt.preventDefault();
+  document.removeEventListener('mousemove', onMouseMove);
+  document.removeEventListener('mouseup', onMouseUp);
+};
 
 // отрисовка глубины эффекта
 
