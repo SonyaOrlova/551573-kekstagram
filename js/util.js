@@ -9,9 +9,7 @@ window.util = (function () {
     },
     isEscEvent: function (evt) {
       var ESC_KEYCODE = 27;
-      if (evt.keyCode === ESC_KEYCODE) {
-        return;
-      }
+      return evt.keyCode === ESC_KEYCODE;
     }
   };
 })();

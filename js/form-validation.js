@@ -6,10 +6,10 @@
 
   //  Хэш-теги
 
-  var descriptionForm = document.querySelector('.img-upload__text');
+  var formInputs = document.querySelector('.img-upload__text');
 
   // *если фокус находится в поле ввода хэш-тега, нажатие на Esc не должно приводить к закрытию формы редактирования изображения
-  descriptionForm.addEventListener('keydown', function (evt) {
+  formInputs.addEventListener('keydown', function (evt) {
     if (window.util.isEscEvent(evt)) {
       evt.stopPropagation();
     }
@@ -24,7 +24,10 @@
     var errorMessage = '';
 
     for (var i = 0; i < hashtags.length; i++) {
-      if (!hashtags[i].startsWith('#')) {
+      if (hashtagsInput.value === '') {
+        evt.target.setCustomValidity('');
+        hashtagsInput.style = 'outline-color: invert';
+      } else if (!hashtags[i].startsWith('#')) {
         errorMessage = 'хэш-тег должен начинаться с символа # (решётка)';
       } else if (hashtags[i] === '#') {
         errorMessage = 'хеш-тег не может состоять только из одной # (решётки)';
@@ -38,14 +41,33 @@
         errorMessage = 'нельзя указать больше 5 хэш-тегов';
       } if (errorMessage) {
         evt.target.setCustomValidity(errorMessage);
+        hashtagsInput.style = 'outline-color: tomato';
         break;
       } else {
         evt.target.setCustomValidity('');
+        hashtagsInput.style = 'outline-color: invert';
       }
     }
   };
 
   // *событие валидации формы
   hashtagsInput.addEventListener('input', onHashtagsValidationInput);
-  descriptionForm.addEventListener('submit', onHashtagsValidationInput);
+  formInputs.addEventListener('submit', onHashtagsValidationInput);
+
+  // *отправка формы на сервер
+  var form = document.querySelector('.img-upload__form');
+  var uploadURL = 'https://js.dump.academy/kekstagram';
+
+  var onError = function () {
+    document.querySelector('.img-upload__message--error').classList.remove('hidden');
+  };
+
+  var onLoad = function () {
+    window.closeEditor();
+  };
+
+  form.addEventListener('submit', function (evt) {
+    evt.preventDefault();
+    window.ajax(uploadURL, 'POST', onLoad, onError, new FormData(form));
+  });
 })();
