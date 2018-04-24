@@ -69,5 +69,6 @@
   form.addEventListener('submit', function (evt) {
     evt.preventDefault();
     window.ajax(uploadURL, 'POST', onLoad, onError, new FormData(form));
+    form.reset();
   });
 })();

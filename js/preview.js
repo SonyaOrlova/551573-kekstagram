@@ -29,7 +29,6 @@
   // показывает увеличенное изображение
   var bigPicture = document.querySelector('.big-picture');
   var bigPictureCloser = document.querySelector('.big-picture__cancel');
-  var bigPictureOverlay = document.querySelector('.big-picture.overlay');
 
   var onBigPictureEscPress = function (evt) {
     if (window.util.isEscEvent(evt)) {
@@ -91,5 +90,4 @@
 
   // закрытие фото (событие)
   bigPictureCloser.addEventListener('click', closeBigPicture);
-  bigPictureOverlay.addEventListener('click', closeBigPicture);
 })();
