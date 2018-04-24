@@ -29,11 +29,6 @@
   // показывает увеличенное изображение
   var bigPicture = document.querySelector('.big-picture');
   var bigPictureCloser = document.querySelector('.big-picture__cancel');
-  var bigPictureOverlay = document.querySelector('.big-picture.overlay');
-
-  // var onBigPictureEscPress = function (evt) {
-  //   window.util.isEscEvent(evt, closeBigPicture);
-  // };
 
   var onBigPictureEscPress = function (evt) {
     if (window.util.isEscEvent(evt)) {
@@ -44,6 +39,7 @@
   // открывает фото
   var openBigPicture = function () {
     bigPicture.classList.remove('hidden');
+    document.body.classList.add('modal-open');
     document.addEventListener('keydown', onBigPictureEscPress);
   };
 
@@ -54,10 +50,7 @@
   };
 
   // отрисовка фото
-  var photos = document.querySelectorAll('.picture__link');
   var renderBigPhoto = function (photo) {
-    openBigPicture();
-
     //  *подстановка комментариев
     // ** берет атрибут по номеру картинки
     var photoNumber = photo.dataset.number;
@@ -69,7 +62,7 @@
     }
     // **добавляет комментарии
     var commentsFragment = document.createDocumentFragment();
-    for (var j = 0; j < window.pictures[photoNumber].comments.length; j++) {
+    for (var j = 1; j < window.pictures[photoNumber].comments.length; j++) {
       commentsFragment.appendChild(renderComments(window.pictures[photoNumber].comments[j]));
     }
     commentsInner.appendChild(commentsFragment);
@@ -77,20 +70,24 @@
     // *подстановка прочих значений миниатюры
     bigPicture.querySelector('.big-picture__img').querySelector('img').src = window.pictures[photoNumber].url;
     bigPicture.querySelector('.likes-count').textContent = window.pictures[photoNumber].likes;
-    bigPicture.querySelector('.comments-count').textContent = window.pictures[photoNumber].comments.length;
+    bigPicture.querySelector('.comments-count').textContent = window.pictures[photoNumber].comments.length - 1;
+    bigPicture.querySelector('.social__caption').textContent = window.pictures[photoNumber].comments[0];
   };
 
   // открытие фото (событие)
 
   var onPhotoClick = function (evt) {
-    renderBigPhoto(evt.target.parentNode);
+    openBigPicture();
+    renderBigPhoto(evt.currentTarget);
   };
 
-  for (var i = 0; i < photos.length; i++) {
-    photos[i].addEventListener('click', onPhotoClick);
-  }
+  window.previewPhoto = function () {
+    var photos = document.querySelectorAll('.picture__link');
+    for (var i = 0; i < photos.length; i++) {
+      photos[i].addEventListener('click', onPhotoClick);
+    }
+  };
 
   // закрытие фото (событие)
   bigPictureCloser.addEventListener('click', closeBigPicture);
-  bigPictureOverlay.addEventListener('click', closeBigPicture);
 })();

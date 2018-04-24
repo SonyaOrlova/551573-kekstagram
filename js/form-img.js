@@ -13,7 +13,7 @@
 
   var onEditorEscPress = function (evt) {
     if (window.util.isEscEvent(evt)) {
-      closeEditor();
+      window.closeEditor();
     }
   };
 
@@ -29,6 +29,9 @@
     // *сброс глубины эффекта
     checkedEffect = defaultEffect;
     renderEffectIntension(defaultEffectValue);
+
+    // *сброс хэш-тегов и описание
+    document.querySelector('.img-upload__text').childNodes.value = '';
   };
 
   // открывает редактор
@@ -39,7 +42,7 @@
   };
 
   // закрывает редактор
-  var closeEditor = function () {
+  window.closeEditor = function () {
     editor.classList.add('hidden');
     document.removeEventListener('keydown', onEditorEscPress);
     selectFile.value = '';
@@ -62,7 +65,7 @@
   });
 
   // закрытие редактора (событие)
-  editorCloser.addEventListener('click', closeEditor);
+  editorCloser.addEventListener('click', window.closeEditor);
 
   // ********** Масштабирование изображения **********
 
