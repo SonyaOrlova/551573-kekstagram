@@ -79,7 +79,7 @@
   var increaseBtn = document.querySelector('.resize__control--plus');
 
   // уменьшает изображение
-  var decreaseImage = function () {
+  var onDecreaseImageBtn = function () {
     if (currentSize > IMG_MIN_SIZE) {
       currentSize -= IMG_SIZE_STEP;
     }
@@ -87,7 +87,7 @@
   };
 
   // увеличивает изображение
-  var increaseImage = function () {
+  var onIncreaseImageBtn = function () {
     if (currentSize < IMG_MAX_SIZE) {
       currentSize += IMG_SIZE_STEP;
     }
@@ -103,8 +103,8 @@
   };
 
   // выбор масштаба (событие)
-  decreaseBtn.addEventListener('click', decreaseImage);
-  increaseBtn.addEventListener('click', increaseImage);
+  decreaseBtn.addEventListener('click', onDecreaseImageBtn);
+  increaseBtn.addEventListener('click', onIncreaseImageBtn);
 
   // ********** Наложение эффекта на изображение **********
 
@@ -136,10 +136,9 @@
   var renderImageEffect = function (effectSelected) {
     // *добавляет класс эффекта после проверки
     for (i = 0; i < effects.length; i++) {
-      if (imagePreview.classList.contains('effects__preview--' + effects[i].value + '')) {
-        imagePreview.classList.remove('effects__preview--' + effects[i].value + '');
-      }
+      imagePreview.classList.remove('effects__preview--' + effects[i].value + '');
     }
+
     imagePreview.classList.add('effects__preview--' + effectSelected + '');
 
     // *сбрасывает глубину эффекта до 100

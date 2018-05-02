@@ -3,6 +3,7 @@
 // создает массив фотографий
 
 (function () {
+
   var LOAD_URL = 'https://js.dump.academy/kekstagram/data';
 
   var onError = function (errorMessage) {
