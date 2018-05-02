@@ -63,7 +63,7 @@
     // **добавляет комментарии
     var commentsFragment = document.createDocumentFragment();
     for (var j = 1; j < window.filteredPictures[photoNumber].comments.length; j++) {
-      commentsFragment.appendChild(renderComments(window.pictures[photoNumber].comments[j]));
+      commentsFragment.appendChild(renderComments(window.filteredPictures[photoNumber].comments[j]));
     }
     commentsInner.appendChild(commentsFragment);
 
