@@ -9,6 +9,7 @@
 
   var renderPicture = function (picture, pictureNumber) {
     var pictureElement = pictureTemplate.cloneNode(true);
+
     pictureElement.querySelector('.picture__img').src = picture.url;
     pictureElement.querySelector('.picture__stat--likes').textContent = picture.likes;
     pictureElement.querySelector('.picture__stat--comments').textContent = picture.comments.length - 1;
@@ -19,7 +20,7 @@
 
   window.insertPictures = function (pictures) {
     var picturesFragment = document.createDocumentFragment();
-    for (var i = 0; i < 25; i++) {
+    for (var i = 0; i <= 25; i++) {
       picturesFragment.appendChild(renderPicture(pictures[i], i));
     }
     document.querySelector('.pictures').appendChild(picturesFragment);
