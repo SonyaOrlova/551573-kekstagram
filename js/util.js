@@ -10,7 +10,7 @@ window.util = (function () {
       return evt.keyCode === ESC_KEYCODE;
     },
     isDebounce: function (fun) {
-      var DEBOUNCE_INTERVAL = 3000;
+      var DEBOUNCE_INTERVAL = 300;
       var lastTimeout;
       if (lastTimeout) {
         window.clearTimeout(lastTimeout);
