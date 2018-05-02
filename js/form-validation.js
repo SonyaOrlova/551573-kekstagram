@@ -6,10 +6,10 @@
 
   //  Хэш-теги
 
-  var formInputs = document.querySelector('.img-upload__text');
+  var formTextArea = document.querySelector('.img-upload__text');
 
   // *если фокус находится в поле ввода хэш-тега, нажатие на Esc не должно приводить к закрытию формы редактирования изображения
-  formInputs.addEventListener('keydown', function (evt) {
+  formTextArea.addEventListener('keydown', function (evt) {
     if (window.util.isEscEvent(evt)) {
       evt.stopPropagation();
     }
@@ -52,7 +52,7 @@
 
   // *событие валидации формы
   hashtagsInput.addEventListener('input', onHashtagsValidationInput);
-  formInputs.addEventListener('submit', onHashtagsValidationInput);
+  formTextArea.addEventListener('submit', onHashtagsValidationInput);
 
   // *отправка формы на сервер
   var form = document.querySelector('.img-upload__form');

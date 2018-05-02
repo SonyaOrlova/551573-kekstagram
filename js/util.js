@@ -2,14 +2,14 @@
 
 window.util = (function () {
   return {
-    random: function (min, max) {
+    getRandomNum: function (min, max) {
       return Math.round(Math.random(min, max) * (max - min) + min);
     },
     isEscEvent: function (evt) {
       var ESC_KEYCODE = 27;
       return evt.keyCode === ESC_KEYCODE;
     },
-    isDebounce: function (fun) {
+    debounce: function (fun) {
       var DEBOUNCE_INTERVAL = 300;
       var lastTimeout;
       if (lastTimeout) {

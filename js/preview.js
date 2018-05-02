@@ -14,7 +14,7 @@
     var listItem = makeElement('li', 'social__comment social__comment--text');
 
     var picture = makeElement('img', 'social__picture');
-    picture.src = 'img/avatar-' + window.util.random(1, 6) + '.svg';
+    picture.src = 'img/avatar-' + window.util.getRandomNum(1, 6) + '.svg';
     picture.alt = 'Аватар комментатора фотографии';
     picture.width = '35';
     picture.height = '35';
@@ -46,6 +46,7 @@
   // закрывает фото
   var closeBigPicture = function () {
     bigPicture.classList.add('hidden');
+    document.body.classList.remove('modal-open');
     document.removeEventListener('keydown', onBigPictureEscPress);
   };
 

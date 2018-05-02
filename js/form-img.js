@@ -52,9 +52,9 @@
   var loadPicture = function (evt) {
     imagePreview.src = URL.createObjectURL(evt.target.files[0]);
     // *меняет изображение в превью эффектов
-    var effectsPreview = document.querySelectorAll('.effects__preview');
-    for (var i = 0; i < effectsPreview.length; i++) {
-      effectsPreview[i].style.backgroundImage = 'url(' + URL.createObjectURL(evt.target.files[0]) + ')';
+    var effectsPreviews = document.querySelectorAll('.effects__preview');
+    for (var i = 0; i < effectsPreviews.length; i++) {
+      effectsPreviews[i].style.backgroundImage = 'url(' + URL.createObjectURL(evt.target.files[0]) + ')';
     }
   };
 
