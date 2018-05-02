@@ -3,6 +3,14 @@
 // загрузка нового изображения
 
 (function () {
+
+  var IMG_DEFAULT_SIZE = 100;
+  var IMG_MAX_SIZE = 100;
+  var IMG_MIN_SIZE = 25;
+  var IMG_SIZE_STEP = 25;
+  var IMG_DEFAULT_EFFECT_VALUE = 1;
+  var IMG_DEFAULT_EFFECT = 'none';
+
   var imagePreview = document.querySelector('.img-upload__preview').querySelector('img');
 
   // ********** Показ формы редактирования и выбор изображения **********
@@ -20,18 +28,15 @@
   // сбрасывает значения выбора
   var resetPreviewChanges = function () {
     // *сброс размеров
-    currentSize = defaultSize;
-    renderImageSize(defaultSize);
+    currentSize = IMG_DEFAULT_SIZE;
+    renderImageSize(IMG_DEFAULT_SIZE);
 
     // *сброс типа эффекта
-    renderImageEffect(defaultEffect);
+    renderImageEffect(IMG_DEFAULT_EFFECT);
 
     // *сброс глубины эффекта
-    checkedEffect = defaultEffect;
-    renderEffectIntension(defaultEffectValue);
-
-    // *сброс хэш-тегов и описание
-    document.querySelector('.img-upload__text').childNodes.value = '';
+    checkedEffect = IMG_DEFAULT_EFFECT;
+    renderEffectIntension(IMG_DEFAULT_EFFECT_VALUE);
   };
 
   // открывает редактор
@@ -52,9 +57,9 @@
   var loadPicture = function (evt) {
     imagePreview.src = URL.createObjectURL(evt.target.files[0]);
     // *меняет изображение в превью эффектов
-    var effectsPreview = document.querySelectorAll('.effects__preview');
-    for (var i = 0; i < effectsPreview.length; i++) {
-      effectsPreview[i].style.backgroundImage = 'url(' + URL.createObjectURL(evt.target.files[0]) + ')';
+    var effectsPreviews = document.querySelectorAll('.effects__preview');
+    for (var i = 0; i < effectsPreviews.length; i++) {
+      effectsPreviews[i].style.backgroundImage = 'url(' + URL.createObjectURL(evt.target.files[0]) + ')';
     }
   };
 
@@ -69,24 +74,22 @@
 
   // ********** Масштабирование изображения **********
 
-  var defaultSize = 100;
-  var currentSize = defaultSize;
-  var sizeStep = 25;
+  var currentSize = IMG_DEFAULT_SIZE;
   var decreaseBtn = document.querySelector('.resize__control--minus');
   var increaseBtn = document.querySelector('.resize__control--plus');
 
   // уменьшает изображение
-  var decreaseImage = function () {
-    if (currentSize > 25) {
-      currentSize -= sizeStep;
+  var onDecreaseImageBtn = function () {
+    if (currentSize > IMG_MIN_SIZE) {
+      currentSize -= IMG_SIZE_STEP;
     }
     renderImageSize(currentSize);
   };
 
   // увеличивает изображение
-  var increaseImage = function () {
-    if (currentSize < 100) {
-      currentSize += sizeStep;
+  var onIncreaseImageBtn = function () {
+    if (currentSize < IMG_MAX_SIZE) {
+      currentSize += IMG_SIZE_STEP;
     }
     renderImageSize(currentSize);
   };
@@ -100,8 +103,8 @@
   };
 
   // выбор масштаба (событие)
-  decreaseBtn.addEventListener('click', decreaseImage);
-  increaseBtn.addEventListener('click', increaseImage);
+  decreaseBtn.addEventListener('click', onDecreaseImageBtn);
+  increaseBtn.addEventListener('click', onIncreaseImageBtn);
 
   // ********** Наложение эффекта на изображение **********
 
@@ -109,8 +112,6 @@
 
   var effects = document.querySelectorAll('.effects__radio');
   var checkedEffect = 'none';
-  var defaultEffect = 'none';
-  var defaultEffectValue = 1;
 
   var selectEffect = function () {
     for (var i = 0; i < effects.length; i++) {
@@ -135,18 +136,17 @@
   var renderImageEffect = function (effectSelected) {
     // *добавляет класс эффекта после проверки
     for (i = 0; i < effects.length; i++) {
-      if (imagePreview.classList.contains('effects__preview--' + effects[i].value + '')) {
-        imagePreview.classList.remove('effects__preview--' + effects[i].value + '');
-      }
+      imagePreview.classList.remove('effects__preview--' + effects[i].value + '');
     }
+
     imagePreview.classList.add('effects__preview--' + effectSelected + '');
 
     // *сбрасывает глубину эффекта до 100
-    renderEffectIntension(defaultEffectValue);
+    renderEffectIntension(IMG_DEFAULT_EFFECT_VALUE);
 
     // *сбрасывает координаты ползунка до 100
-    effectRunner.style.left = defaultEffectValue * 100 + '%';
-    effectLevel.style.width = defaultEffectValue * 100 + '%';
+    effectRunner.style.left = IMG_DEFAULT_EFFECT_VALUE * 100 + '%';
+    effectLevel.style.width = IMG_DEFAULT_EFFECT_VALUE * 100 + '%';
 
     // *скрывает слайдер при выборе оригинального эффекта
     if (effectSelected === 'none') {
@@ -156,8 +156,8 @@
     }
 
     // *сброс размеров изображения
-    currentSize = defaultSize;
-    renderImageSize(defaultSize);
+    currentSize = IMG_DEFAULT_SIZE;
+    renderImageSize(IMG_DEFAULT_SIZE);
   };
 
   // выбор глубины эффекта
@@ -166,8 +166,6 @@
   var effectLine = document.querySelector('.scale__line');
   var effectRunner = document.querySelector('.scale__pin');
   var effectLevel = document.querySelector('.scale__level');
-
-  // (?) var effectValue = document.querySelector('.scale__value'); нужен?
 
   // расчет уровня глубины эффекта (координаты ползунка)
 

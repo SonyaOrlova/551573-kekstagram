@@ -1,15 +1,22 @@
 'use strict';
 
-//
-
 window.util = (function () {
+  var ESC_KEYCODE = 27;
+  var DEBOUNCE_INTERVAL = 300;
+  var lastTimeout;
+
   return {
-    random: function (min, max) {
-      return Math.round(Math.random(min, max) * (max - min) + min);
+    getRandomNum: function (min, max) {
+      return Math.round(Math.random() * (max - min) + min);
     },
     isEscEvent: function (evt) {
-      var ESC_KEYCODE = 27;
       return evt.keyCode === ESC_KEYCODE;
+    },
+    debounce: function (fun) {
+      if (lastTimeout) {
+        window.clearTimeout(lastTimeout);
+      }
+      lastTimeout = window.setTimeout(fun, DEBOUNCE_INTERVAL);
     }
   };
 })();

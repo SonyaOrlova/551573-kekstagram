@@ -3,6 +3,10 @@
 // показ увеличенного изображения
 
 (function () {
+
+  var PIC_AVATAR_WIDTH = 35;
+  var PIC_AVATAR_HEIGHT = 35;
+
   // отрисовывает комментарии под увеличенным изображением
   var makeElement = function (tagName, className) {
     var element = document.createElement(tagName);
@@ -14,10 +18,10 @@
     var listItem = makeElement('li', 'social__comment social__comment--text');
 
     var picture = makeElement('img', 'social__picture');
-    picture.src = 'img/avatar-' + window.util.random(1, 6) + '.svg';
+    picture.src = 'img/avatar-' + window.util.getRandomNum(1, 6) + '.svg';
     picture.alt = 'Аватар комментатора фотографии';
-    picture.width = '35';
-    picture.height = '35';
+    picture.width = PIC_AVATAR_WIDTH;
+    picture.height = PIC_AVATAR_HEIGHT;
     listItem.appendChild(picture);
 
     var text = document.createTextNode(comment);
@@ -46,6 +50,7 @@
   // закрывает фото
   var closeBigPicture = function () {
     bigPicture.classList.add('hidden');
+    document.body.classList.remove('modal-open');
     document.removeEventListener('keydown', onBigPictureEscPress);
   };
 
@@ -62,16 +67,16 @@
     }
     // **добавляет комментарии
     var commentsFragment = document.createDocumentFragment();
-    for (var j = 1; j < window.pictures[photoNumber].comments.length; j++) {
-      commentsFragment.appendChild(renderComments(window.pictures[photoNumber].comments[j]));
+    for (var j = 1; j < window.filteredPictures[photoNumber].comments.length; j++) {
+      commentsFragment.appendChild(renderComments(window.filteredPictures[photoNumber].comments[j]));
     }
     commentsInner.appendChild(commentsFragment);
 
     // *подстановка прочих значений миниатюры
-    bigPicture.querySelector('.big-picture__img').querySelector('img').src = window.pictures[photoNumber].url;
-    bigPicture.querySelector('.likes-count').textContent = window.pictures[photoNumber].likes;
-    bigPicture.querySelector('.comments-count').textContent = window.pictures[photoNumber].comments.length - 1;
-    bigPicture.querySelector('.social__caption').textContent = window.pictures[photoNumber].comments[0];
+    bigPicture.querySelector('.big-picture__img').querySelector('img').src = window.filteredPictures[photoNumber].url;
+    bigPicture.querySelector('.likes-count').textContent = window.filteredPictures[photoNumber].likes;
+    bigPicture.querySelector('.comments-count').textContent = window.filteredPictures[photoNumber].comments.length - 1;
+    bigPicture.querySelector('.social__caption').textContent = window.filteredPictures[photoNumber].comments[0];
   };
 
   // открытие фото (событие)

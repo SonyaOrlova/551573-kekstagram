@@ -4,12 +4,14 @@
 
 (function () {
 
+  var UPLOAD_URL = 'https://js.dump.academy/kekstagram';
+
   //  Хэш-теги
 
-  var formInputs = document.querySelector('.img-upload__text');
+  var formTextArea = document.querySelector('.img-upload__text');
 
   // *если фокус находится в поле ввода хэш-тега, нажатие на Esc не должно приводить к закрытию формы редактирования изображения
-  formInputs.addEventListener('keydown', function (evt) {
+  formTextArea.addEventListener('keydown', function (evt) {
     if (window.util.isEscEvent(evt)) {
       evt.stopPropagation();
     }
@@ -52,11 +54,10 @@
 
   // *событие валидации формы
   hashtagsInput.addEventListener('input', onHashtagsValidationInput);
-  formInputs.addEventListener('submit', onHashtagsValidationInput);
+  formTextArea.addEventListener('submit', onHashtagsValidationInput);
 
   // *отправка формы на сервер
   var form = document.querySelector('.img-upload__form');
-  var uploadURL = 'https://js.dump.academy/kekstagram';
 
   var onError = function () {
     document.querySelector('.img-upload__message--error').classList.remove('hidden');
@@ -68,7 +69,7 @@
 
   form.addEventListener('submit', function (evt) {
     evt.preventDefault();
-    window.ajax(uploadURL, 'POST', onLoad, onError, new FormData(form));
+    window.ajax(UPLOAD_URL, 'POST', onLoad, onError, new FormData(form));
     form.reset();
   });
 })();
