@@ -1,13 +1,14 @@
 'use strict';
 
 (function () {
+  var CODE_SUCCESS = 200;
 
   window.ajax = function (url, method, onLoad, onError, data) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
 
     xhr.addEventListener('load', function () {
-      if (xhr.status === 200) {
+      if (xhr.status === CODE_SUCCESS) {
         onLoad(xhr.response);
       } else {
         onError('Статус ответа: ' + xhr.status + ' ' + xhr.statusText);

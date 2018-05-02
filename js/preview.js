@@ -3,6 +3,10 @@
 // показ увеличенного изображения
 
 (function () {
+
+  var PIC_AVATAR_WIDTH = 35;
+  var PIC_AVATAR_HEIGHT = 35;
+
   // отрисовывает комментарии под увеличенным изображением
   var makeElement = function (tagName, className) {
     var element = document.createElement(tagName);
@@ -16,8 +20,8 @@
     var picture = makeElement('img', 'social__picture');
     picture.src = 'img/avatar-' + window.util.getRandomNum(1, 6) + '.svg';
     picture.alt = 'Аватар комментатора фотографии';
-    picture.width = '35';
-    picture.height = '35';
+    picture.width = PIC_AVATAR_WIDTH;
+    picture.height = PIC_AVATAR_HEIGHT;
     listItem.appendChild(picture);
 
     var text = document.createTextNode(comment);
