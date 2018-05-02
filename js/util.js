@@ -1,7 +1,5 @@
 'use strict';
 
-//
-
 window.util = (function () {
   return {
     random: function (min, max) {
@@ -10,6 +8,14 @@ window.util = (function () {
     isEscEvent: function (evt) {
       var ESC_KEYCODE = 27;
       return evt.keyCode === ESC_KEYCODE;
+    },
+    isDebounce: function (fun) {
+      var DEBOUNCE_INTERVAL = 3000;
+      var lastTimeout;
+      if (lastTimeout) {
+        window.clearTimeout(lastTimeout);
+      }
+      lastTimeout = window.setTimeout(fun, DEBOUNCE_INTERVAL);
     }
   };
 })();
