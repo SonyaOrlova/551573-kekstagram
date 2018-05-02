@@ -5,6 +5,8 @@
 (function () {
 
   var IMG_DEFAULT_SIZE = 100;
+  var IMG_MAX_SIZE = 100;
+  var IMG_MIN_SIZE = 25;
   var IMG_SIZE_STEP = 25;
   var IMG_DEFAULT_EFFECT_VALUE = 1;
   var IMG_DEFAULT_EFFECT = 'none';
@@ -35,9 +37,6 @@
     // *сброс глубины эффекта
     checkedEffect = IMG_DEFAULT_EFFECT;
     renderEffectIntension(IMG_DEFAULT_EFFECT_VALUE);
-
-    // *сброс хэш-тегов и описание
-    document.querySelector('.img-upload__text').childNodes.value = '';
   };
 
   // открывает редактор
@@ -81,7 +80,7 @@
 
   // уменьшает изображение
   var decreaseImage = function () {
-    if (currentSize > 25) {
+    if (currentSize > IMG_MIN_SIZE) {
       currentSize -= IMG_SIZE_STEP;
     }
     renderImageSize(currentSize);
@@ -89,7 +88,7 @@
 
   // увеличивает изображение
   var increaseImage = function () {
-    if (currentSize < 100) {
+    if (currentSize < IMG_MAX_SIZE) {
       currentSize += IMG_SIZE_STEP;
     }
     renderImageSize(currentSize);

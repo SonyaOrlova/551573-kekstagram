@@ -3,7 +3,7 @@
 // создает массив фотографий
 
 (function () {
-  var loadURL = 'https://js.dump.academy/kekstagram/data';
+  var LOAD_URL = 'https://js.dump.academy/kekstagram/data';
 
   var onError = function (errorMessage) {
     var node = document.createElement('div');
@@ -32,5 +32,5 @@
     document.querySelector('.img-filters').classList.remove('img-filters--inactive');
   };
 
-  window.ajax(loadURL, 'GET', onLoad, onError);
+  window.ajax(LOAD_URL, 'GET', onLoad, onError);
 })();

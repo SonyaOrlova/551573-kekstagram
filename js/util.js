@@ -6,7 +6,7 @@ window.util = (function () {
 
   return {
     getRandomNum: function (min, max) {
-      return Math.round(Math.random(min, max) * (max - min) + min);
+      return Math.round(Math.random() * (max - min) + min);
     },
     isEscEvent: function (evt) {
       return evt.keyCode === ESC_KEYCODE;

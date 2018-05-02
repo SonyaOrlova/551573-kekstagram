@@ -3,8 +3,6 @@
 // отрисовывает миниатюры изображений
 
 (function () {
-  var PICTURES_COUNT = 25;
-
   // создает DOM-элементы на базе шаблона
   var pictureTemplate = document.querySelector('#picture').content;
 
@@ -21,7 +19,7 @@
 
   window.insertPictures = function (pictures) {
     var picturesFragment = document.createDocumentFragment();
-    for (var i = 0; i <= PICTURES_COUNT; i++) {
+    for (var i = 0; i < pictures.length; i++) {
       picturesFragment.appendChild(renderPicture(pictures[i], i));
     }
     document.querySelector('.pictures').appendChild(picturesFragment);

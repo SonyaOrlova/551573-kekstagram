@@ -2,6 +2,7 @@
 
 (function () {
   var CODE_SUCCESS = 200;
+  var TIMEOUT_VALUE = 10000;
 
   window.ajax = function (url, method, onLoad, onError, data) {
     var xhr = new XMLHttpRequest();
@@ -23,7 +24,7 @@
       onError('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
     });
 
-    xhr.timeout = 10000; // 10s
+    xhr.timeout = TIMEOUT_VALUE;
 
     xhr.open(method, url);
     xhr.send(data);
