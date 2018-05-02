@@ -6,7 +6,7 @@
 
   var photoSortingBtns = document.querySelectorAll('.img-filters__button');
 
-  window.initPhotoSorting = function () {
+  window.renderPhotoGallery = function () {
 
     var recomendedPhotoSortingBtn = document.querySelector('#filter-recomended');
     var popularPhotoSortingBtn = document.querySelector('#filter-popular');
@@ -47,8 +47,9 @@
       sortRandomPhotos();
     }
 
-    //* запускает отрисовку галерии
+    //* запускает отрисовку галерии и открытие превью фото
     window.insertPictures(window.filteredPictures);
+    window.previewPhoto();
   };
 
   window.changePhotoSorting = function () {
@@ -70,8 +71,7 @@
         checkedphotoSortingBtn.classList.add('img-filters__button--active');
 
         //* запускает сортировку
-
-        window.util.isDebounce(window.initPhotoSorting);
+        window.util.isDebounce(window.renderPhotoGallery);
       });
     }
   };

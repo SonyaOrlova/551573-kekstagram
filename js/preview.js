@@ -62,16 +62,16 @@
     }
     // **добавляет комментарии
     var commentsFragment = document.createDocumentFragment();
-    for (var j = 1; j < window.pictures[photoNumber].comments.length; j++) {
+    for (var j = 1; j < window.filteredPictures[photoNumber].comments.length; j++) {
       commentsFragment.appendChild(renderComments(window.pictures[photoNumber].comments[j]));
     }
     commentsInner.appendChild(commentsFragment);
 
     // *подстановка прочих значений миниатюры
-    bigPicture.querySelector('.big-picture__img').querySelector('img').src = window.pictures[photoNumber].url;
-    bigPicture.querySelector('.likes-count').textContent = window.pictures[photoNumber].likes;
-    bigPicture.querySelector('.comments-count').textContent = window.pictures[photoNumber].comments.length - 1;
-    bigPicture.querySelector('.social__caption').textContent = window.pictures[photoNumber].comments[0];
+    bigPicture.querySelector('.big-picture__img').querySelector('img').src = window.filteredPictures[photoNumber].url;
+    bigPicture.querySelector('.likes-count').textContent = window.filteredPictures[photoNumber].likes;
+    bigPicture.querySelector('.comments-count').textContent = window.filteredPictures[photoNumber].comments.length - 1;
+    bigPicture.querySelector('.social__caption').textContent = window.filteredPictures[photoNumber].comments[0];
   };
 
   // открытие фото (событие)

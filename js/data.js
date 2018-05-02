@@ -25,11 +25,9 @@
   var onLoad = function (pictures) {
     window.pictures = pictures;
 
-    window.initPhotoSorting();
+    window.renderPhotoGallery();
 
     window.changePhotoSorting();
-
-    window.previewPhoto();
 
     document.querySelector('.img-filters').classList.remove('img-filters--inactive');
   };
