@@ -174,13 +174,14 @@
 
     var effectLineCoordsLeft = effectLineCoords.left;
     var effectRunnerCoordsLeft = target.clientX - effectLineCoordsLeft;
+    var effectRunnerCoordsRight = effectRunnerCoordsLeft + effectRunner.clientWidth;
 
     // *выходит за левую границу - разместить по ней
     if (effectRunnerCoordsLeft < 0) {
       effectRunnerCoordsLeft = 0;
     }
     // *выходит за правую границу - разместить по ней
-    if (effectRunnerCoordsLeft + effectRunner.clientWidth > effectLine.clientWidth) {
+    if (effectRunnerCoordsRight > effectLine.clientWidth) {
       effectRunnerCoordsLeft = effectLine.clientWidth;
     }
 
