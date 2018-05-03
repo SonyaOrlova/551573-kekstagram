@@ -26,13 +26,14 @@
   };
 
   var sortRandomPhotos = function () {
-    window.filteredPictures = window.pictures.slice();
-    for (var i = window.filteredPictures.length - 1; i > 0; i--) {
+    var randomPictures = window.pictures.slice();
+    for (var i = randomPictures.length - 1; i > 0; i--) {
       var j = Math.floor(Math.random() * (i + 1));
-      var temp = window.filteredPictures[i];
-      window.filteredPictures[i] = window.filteredPictures[j];
-      window.filteredPictures[j] = temp;
+      var temp = randomPictures[i];
+      randomPictures[i] = randomPictures[j];
+      randomPictures[j] = temp;
     }
+    window.filteredPictures = randomPictures;
     return window.filteredPictures;
   };
 
